@@ -1,0 +1,11 @@
+# Use uma imagem base do Apache Kafka
+FROM confluentinc/cp-kafka:7.0.0
+
+# Expõe a porta do ZooKeeper (utilizado pelo Kafka)
+EXPOSE 2181
+
+# Expõe a porta do Kafka Broker
+EXPOSE 9092
+
+# Opcionalmente, se você quiser expor o painel de controle do Kafka Schema Registry
+# EXPOSE 8081

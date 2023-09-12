@@ -1,0 +1,34 @@
+version: '3'
+services:
+  produtor:
+    build:
+      context: .
+      dockerfile: Dockerfile.produtor
+    depends_on:
+      - kafka
+    command: bash -c "sleep 8 && python produtor.py"
+  consumidor:
+    build:
+      context: .
+      dockerfile: Dockerfile.consumidor
+    depends_on:
+      - kafka
+    command: bash -c "sleep 8 && python consumidor.py"
+  kafka:
+    build:
+      context: .
+      dockerfile: Dockerfile.kafka
+    ports:
+      - '2181:2181'  # Porta do ZooKeeper
+      - '9092:9092'  # Porta do Kafka Broker
+      # Opcionalmente, se você estiver usando Schema Registry:
+      # - '8081:8081'
+    # Adicione outras configurações relevantes do Kafka, se necessário
+    # ...
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "kafka-broker-api-versions --bootstrap-server=localhost:9092"
+      interval: 5s
+      timeout: 3s
+      retries: 10
